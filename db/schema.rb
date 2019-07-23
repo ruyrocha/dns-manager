@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_23_053214) do
+ActiveRecord::Schema.define(version: 2019_07_23_055106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "dns_records", force: :cascade do |t|
+    t.integer "domain_id"
+    t.integer "record_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "domains", force: :cascade do |t|
     t.string "name"
@@ -21,17 +28,20 @@ ActiveRecord::Schema.define(version: 2019_07_23_053214) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "domains_records", id: false, force: :cascade do |t|
+    t.bigint "domain_id", null: false
+    t.bigint "record_id", null: false
+    t.index ["domain_id", "record_id"], name: "index_domains_records_on_domain_id_and_record_id"
+  end
+
   create_table "records", force: :cascade do |t|
     t.string "name"
-    t.integer "record_type"
+    t.integer "record_type", default: 0, null: false
     t.integer "ttl", default: 300, null: false
     t.text "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "domain_id"
-    t.index ["domain_id"], name: "index_records_on_domain_id"
     t.index ["value"], name: "index_records_on_value"
   end
 
-  add_foreign_key "records", "domains"
 end
