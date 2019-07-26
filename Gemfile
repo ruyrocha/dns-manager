@@ -29,7 +29,9 @@ gem 'bootsnap', '>= 1.1.0', require: false
 # gem 'rack-cors'
 
 gem 'grape'
-gem 'grape-kaminari'
+gem 'kaminari'
+gem 'api-pagination'
+gem 'fast_jsonapi'
 gem 'grape-active_model_serializers'
 gem 'grape-swagger'
 

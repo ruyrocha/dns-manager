@@ -14,8 +14,14 @@ class Record < ApplicationRecord
     txt: 11
   }
 
-  validates :value, presence: true, uniqueness: true
+  validates :value, presence: true
 
   has_many :dns_records
   has_many :domains, through: :dns_records
+
+  scope :ips_for_domains, -> (hostnames) {
+    joins(:domains).distinct
+      .where(record_type: Record.record_types[:a])
+      .where(domains: { name: hostnames }).pluck(:value)
+  }
 end
