@@ -1,10 +1,11 @@
 def assign_ip_to_domains_list(ip = '', domains = [])
   if ip.presence && domains.presence
-    record = Record.create(value: ip, record_type: Record.record_types[:a])
+    record = Record.where(value: ip, record_type: Record.record_types[:a])
+      .first_or_create
 
     domains.each do |hostname|
-      domain = Domain.create(name: hostname)
-      DnsRecord.create(domain: domain, record: record)
+      domain = Domain.where(name: hostname).first_or_create
+      DnsRecord.where(domain: domain, record: record).first_or_create
     end
     puts " --> Assigned #{ip} to #{domains.join(", ")}."
   end

@@ -1,3 +1,3 @@
 # DNS Manager API
 
-Manage your own DNS records with easy!
+The purpose of this API is to present a brief and custom report for DNS records.
